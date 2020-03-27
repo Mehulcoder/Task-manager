@@ -16,17 +16,11 @@ MongoClient.connect(connectionURL,{useNewUrlParser:true, useUnifiedTopology: tru
     //The database that we are trying to maniplulate
     const db = client.db(databaseName);
 
-    db.collection('users').insertOne(
-    {
-        _id: id,
-        name: "Sarthak", 
-        age: 17,
-    },
-    (err, result)=>{
+    db.collection('tasks').find({completed:true}).toArray((err, array)=>{
         if (err) {
-            return console.log("Unable to insert");
+            return console.log(err);
         }
 
-        console.log(result.ops);
+        console.log(array);
     });
 });
