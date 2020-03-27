@@ -16,11 +16,13 @@ MongoClient.connect(connectionURL,{useNewUrlParser:true, useUnifiedTopology: tru
     //The database that we are trying to maniplulate
     const db = client.db(databaseName);
 
-    db.collection('tasks').find({completed:true}).toArray((err, array)=>{
-        if (err) {
-            return console.log(err);
-        }
+    var updatePromise = db.collection('users').deleteMany({
+        age:20
+    });
 
-        console.log(array);
+    updatePromise.then((result)=>{
+        console.log(result.deletedCount);
+    }).catch((err)=>{
+        console.log(err);
     });
 });
