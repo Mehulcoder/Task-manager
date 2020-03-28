@@ -3,6 +3,9 @@ var validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-app-api', {useNewUrlParser: true, useUnifiedTopology:true} );
 
+//
+// ─── USER MODEL ─────────────────────────────────────────────────────────────────
+//
 var User = mongoose.model('user',{
     name: {
         type: String,
@@ -44,6 +47,12 @@ var User = mongoose.model('user',{
         }
     }
 });
+// ────────────────────────────────────────────────────────────────────────────────
+
+
+//
+// ─── TASK MODEL ─────────────────────────────────────────────────────────────────
+//
 
 var Task = new mongoose.model('Task',{
     description: {
@@ -58,17 +67,30 @@ var Task = new mongoose.model('Task',{
     }
 });
 
-var task = new Task({
-    description:"Eat lunch",
-    completed:"true"
-});
+// ────────────────────────────────────────────────────────────────────────────────
 
-task.save().then(()=>{
-    console.log("task: ",task)
-}).catch((err)=>{
-    console.log("Task not saved: ", err)
-})
 
+//
+// ─── SAVE TASK ──────────────────────────────────────────────────────────────────
+//
+
+// var task = new Task({
+//     description:"Eat lunch",
+//     completed:"true"
+// });
+
+// task.save().then(()=>{
+//     console.log("task: ",task)
+// }).catch((err)=>{
+//     console.log("Task not saved: ", err)
+// })
+
+
+//
+// ─── SAVE USER ──────────────────────────────────────────────────────────────────
+//
+
+    
 // var me = new User({
 //     name: "Sarthak Chaturvedi",
 //     email: "sarthak355180@gmail.com",
@@ -81,3 +103,6 @@ task.save().then(()=>{
 // }).catch((err)=>{
 //     console.log("Invalid input: ", err);
 // })
+
+// ────────────────────────────────────────────────────────────────────────────────
+
