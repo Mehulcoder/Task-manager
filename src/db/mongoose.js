@@ -49,21 +49,25 @@ var Task = new mongoose.model('Task',{
     description: {
         type: String,
         trim: true,
-        
+        required:true
+    },
+    completed:{
+        type:Boolean,
+        required: false,
+        default: false
     }
 });
 
-// var task = new Task({
-//     description:"Learn about the mongoose library",
-//     completed:false
-// });
+var task = new Task({
+    description:"Eat lunch",
+    completed:"true"
+});
 
-// task.save().then((result)=>{
-//     console.log("result: ",result);
-//     console.log("task: ",task)
-// }).catch(()=>{
-//     console.log("Task not saved")
-// })
+task.save().then(()=>{
+    console.log("task: ",task)
+}).catch((err)=>{
+    console.log("Task not saved: ", err)
+})
 
 // var me = new User({
 //     name: "Sarthak Chaturvedi",
