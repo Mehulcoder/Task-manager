@@ -84,7 +84,7 @@ router.patch('/users/:id', async (req, res) => {
         await user.save();
 
         // The below bypasses the middleware. Therefore not good
-        ///// var user = await User.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
+        // var user = await User.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
         
         if (!user) {
             return res.status(404).send();

@@ -12,13 +12,6 @@ app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
 
-var myFunction = async () => {
-    var password = "Red12345!";
-    var hashedPassword = await bcrypt.hash(password, 8);
-    console.log(hashedPassword);
-}
-
-
 app.listen(port,()=>{
     console.log("Server is on port "+port);
 });
