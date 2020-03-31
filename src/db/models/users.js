@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
-
+var bcrypt = require('bcryptjs');
 
 
 //
@@ -47,16 +47,24 @@ var userSchema = new mongoose.Schema({
             }
         }
     }
-})
+});
 
-userSchema.pre('save', function (next) {  
-    console.log("This is before the save");
+//
+// ─── PASSWORD HASHING ───────────────────────────────────────────────────────────
+//
+
+userSchema.pre('save', async function (next) {  
+    //Check if the passoword is changed
+    //If yes than hash it
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password,8);
+    }
     next();
 })
 
-var User = mongoose.model('User', userSchema);
+//Save the model
 
-// ────────────────────────────────────────────────────────────────────────────────
+var User = mongoose.model('User', userSchema);
 
 //
 // ─── MODULE EXPORT ──────────────────────────────────────────────────────────────
