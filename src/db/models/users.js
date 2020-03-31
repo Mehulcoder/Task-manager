@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 
 
 //
-// ─── USER MODEL ─────────────────────────────────────────────────────────────────
+// ─── USER MODEL SCHEMA─────────────────────────────────────────────────────────────────
 //
 
 var userSchema = new mongoose.Schema({
@@ -54,15 +54,19 @@ var userSchema = new mongoose.Schema({
 //
 
 userSchema.pre('save', async function (next) {  
+    
     //Check if the passoword is changed
     //If yes than hash it
+    
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password,8);
     }
     next();
 })
 
-//Save the model
+//
+// ─── MODEL THE SCHEMA ─────────────────────────────────────────────────────────────
+//    
 
 var User = mongoose.model('User', userSchema);
 

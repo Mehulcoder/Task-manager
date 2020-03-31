@@ -68,7 +68,19 @@ router.patch('/tasks/:id', async (req, res) => {
 
     var id = req.params.id
     try {
-        var task = await Task.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
+        var task = await Task.findById(id);
+
+        updates.forEach((update) => {
+            
+            //since update is a variable therefore square bracket
+            task[update] = req.body[update];
+        })
+
+        //Now we have the acces to middleware before the save
+        await task.save();
+
+        // The below bypasses the middleware. Therefore not good
+        // var task = await Task.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
         if (!task) {
             return res.status(404).send();
         }
