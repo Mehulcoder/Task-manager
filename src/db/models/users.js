@@ -1,10 +1,13 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
 
+
+
 //
 // ─── USER MODEL ─────────────────────────────────────────────────────────────────
 //
-var User = mongoose.model('user',{
+
+var userSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true
@@ -44,7 +47,15 @@ var User = mongoose.model('user',{
             }
         }
     }
-});
+})
+
+userSchema.pre('save', function (next) {  
+    console.log("This is before the save");
+    next();
+})
+
+var User = mongoose.model('User', userSchema);
+
 // ────────────────────────────────────────────────────────────────────────────────
 
 //
@@ -53,18 +64,4 @@ var User = mongoose.model('user',{
 
 module.exports = User;
 
-
-//
-// ─── SAVE TASK ──────────────────────────────────────────────────────────────────
-//
-
-// var task = new Task({
-//     description:"Eat lunch",
-//     completed:"true"
-// });
-
-// task.save().then(()=>{
-//     console.log("task: ",task)
-// }).catch((err)=>{
-//     console.log("Task not saved: ", err)
-// })
+// ────────────────────────────────────────────────────────────────────────────────

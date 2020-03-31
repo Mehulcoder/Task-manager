@@ -38,10 +38,10 @@ router.get('/tasks/:id', async (req, res)=>{
 // ─── POST ROUTE  ────────────────────────────────────────────────────
 //
 
-router.post("/users",async (req, res)=>{
-    var user = new User(req.body);
-    user.save().then(()=>{
-        res.status(201).send(user);
+router.post("/tasks",async (req, res)=>{
+    var task = new Task(req.body);
+    task.save().then(()=>{
+        res.status(201).send(task);
     }).catch((err)=>{
         res.send(err)
     });

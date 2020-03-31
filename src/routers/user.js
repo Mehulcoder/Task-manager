@@ -39,11 +39,11 @@ router.get('/users/:id', async (req, res)=>{
 // ─── POST ROUTE ─────────────────────────────────────────────────────────────────
 //
 
-router.post("/tasks", async (req, res)=>{
-    var task = new Task(req.body);
+router.post("/users", async (req, res)=>{
+    var user = new User(req.body);
     try {
-        await task.save();
-        res.status(201).send(task);
+        await user.save();
+        res.status(201).send(user);
     } catch (error) {
         res.send(error);
     }
