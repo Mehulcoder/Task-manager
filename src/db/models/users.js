@@ -50,6 +50,25 @@ var userSchema = new mongoose.Schema({
 });
 
 //
+// ─── DEFINE THE FUNCTION TO FIND USER ───────────────────────────────────────────
+//
+
+userSchema.statics.findByCredentials = async (email, password) => {
+    var user = await User.findOne({email});
+    if (!user) {
+        throw new Error("Unable to login!");
+    }
+
+    var match = await bcrypt.compare(password,user.password);
+
+    if(!match){
+        throw new Error("Unable to login!");
+    }
+
+    return user;
+}
+
+//
 // ─── PASSWORD HASHING ───────────────────────────────────────────────────────────
 //
 
