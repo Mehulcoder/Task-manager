@@ -10,6 +10,8 @@ var auth = async (req,res, next) => {
         if (!user) {
             throw new Error("Token is invalid");
         }
+
+        req.token = token;
         req.user = user;
         next();
     } catch (e) {

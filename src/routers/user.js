@@ -4,17 +4,15 @@ var User = require("../models/users");
 var auth = require('../middleware/auth');
 
 //
-// ─── GET ROUTE ──────────────────────────────────────────────────────────────────
+// ─── VIEW ROUTE ──────────────────────────────────────────────────────────────────
 //
 
-router.get('/users',auth,async (req, res)=>{
-    try {
-        var users = await User.find({});
-        res.send(users);
-    } catch (error) {
-        return res.status(500).send("Error: "+error);
-    }
+//We've changed the route below to prevent access of data of other users
+router.get('/users/me',auth,async (req, res)=>{
+    res.send(req.user);
 });
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 router.get('/users/:id', async (req, res)=>{
     var _id = req.params.id;
@@ -64,6 +62,21 @@ router.post('/users/login',async (req, res) => {
     }
 })
 
+//
+// ─── LOG OUT ────────────────────────────────────────────────────────────────────
+//
+
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token!=req.token;
+        })
+
+        await req.user.save();
+    } catch (e) {
+        res.status(500).send();
+    }
+})
 
 //
 // ─── PATCH ROUTE ────────────────────────────────────────────────────────────────
