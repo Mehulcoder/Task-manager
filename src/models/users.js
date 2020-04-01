@@ -92,6 +92,19 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 
 //
+// ─── HIDING THE PRIVATE INFO ────────────────────────────────────────────────────
+//
+
+userSchema.methods.getPublicProfile = function () {  
+    const user = this;
+    var userObject = user.toObject();
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject
+};
+
+//
 // ─── PASSWORD HASHING ───────────────────────────────────────────────────────────
 //
 
