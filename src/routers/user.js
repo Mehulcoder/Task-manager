@@ -63,7 +63,7 @@ router.post('/users/login',async (req, res) => {
 })
 
 //
-// ─── LOG OUT ────────────────────────────────────────────────────────────────────
+// ─── LOG OUT OF CURRENT SESSION────────────────────────────────────────────────────────────────────
 //
 
 router.post('/users/logout', auth, async (req, res) => {
@@ -73,8 +73,24 @@ router.post('/users/logout', auth, async (req, res) => {
         })
 
         await req.user.save();
+        res.send();
     } catch (e) {
         res.status(500).send();
+    }
+})
+
+//
+// ─── LOG OUT OF ALL SESSIONS ────────────────────────────────────────────────────
+//
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        var user = req.user;
+        user.tokens = [];
+        await user.save();
+        res.status(500).send("Logged out of all sessions!");
+    } catch (e) {
+        res.status(400).send(e);
     }
 })
 
