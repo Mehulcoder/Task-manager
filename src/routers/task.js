@@ -1,5 +1,6 @@
 var express = require('express');
 var router = new express.Router();
+var auth = require('../middleware/auth');
 var Task = require('../models/tasks');
 
 
@@ -37,7 +38,11 @@ router.get('/tasks/:id', async (req, res)=>{
 //
 
 router.post("/tasks",async (req, res)=>{
-    var task = new Task(req.body);
+    var task = new Task({
+        ...req.body,
+        owner:req.user._id
+    });
+    
     task.save().then(()=>{
         res.status(201).send(task);
     }).catch((err)=>{

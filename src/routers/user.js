@@ -98,7 +98,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 // ─── PATCH ROUTE ────────────────────────────────────────────────────────────────
 //
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     var updates = Object.keys(req.body);
     var allowedUpdates = ["age","name","email","password"];
     var isValidOperation = updates.every((update) => {
@@ -111,10 +111,10 @@ router.patch('/users/:id', async (req, res) => {
         });
     }
 
-    var id = req.params.id
+    //No need of getting id as we'll update only us
+    // var id = req.params.id
     try {
-        var user = await User.findById(id);
-
+        var user = req.user;
         updates.forEach((update) => {
             
             //since update is a variable therefore square bracket
@@ -136,20 +136,15 @@ router.patch('/users/:id', async (req, res) => {
     }
 });
 
-
 //
 // ─── DELETE ROUTE ───────────────────────────────────────────────────────────────
 //
 
-router.delete('/users/:id', async (req, res) => {
-    var _id = req.params.id;
-
+//We change it. We should only be able to delete us and not anyone
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        var user = await User.findByIdAndDelete(_id);
-        if(!user){
-            return res.status(404).send();
-        }
-        res.send(user);
+        await req.user.remove();
+        res.send(req.user);
     } catch (e) {
         res.status(400).send(e);
     }
