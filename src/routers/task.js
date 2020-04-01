@@ -72,7 +72,8 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     try {
         // The below bypasses the middleware. Therefore not good
         // var task = await Task.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
-        var task = await Task.findOne({id,owner:req.user._id});
+        console.log("I'm atleast here",req.user._id,id);
+        var task = await Task.findOne({_id:id,owner:req.user._id});
 
         if (!task) {
             return res.status(404).send();
