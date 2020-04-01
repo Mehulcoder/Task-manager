@@ -1,13 +1,13 @@
 var express = require('express');
 var router = new express.Router();
 var User = require("../models/users");
-
+var auth = require('../middleware/auth');
 
 //
 // ─── GET ROUTE ──────────────────────────────────────────────────────────────────
 //
 
-router.get('/users',async (req, res)=>{
+router.get('/users',auth,async (req, res)=>{
     try {
         var users = await User.find({});
         res.send(users);

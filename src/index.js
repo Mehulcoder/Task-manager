@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var userRouter = require('./routers/user');
 var taskRouter = require('./routers/task');
-var auth = require(.'./middleware/auth');
+var auth = require('./middleware/auth');
 require('../src/db/mongoose');
 
 const app = express();
