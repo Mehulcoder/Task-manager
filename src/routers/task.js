@@ -1,6 +1,6 @@
 var express = require('express');
 var router = new express.Router();
-var Task = require('../db/models/tasks');
+var Task = require('../models/tasks');
 
 
 //

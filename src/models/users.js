@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 
 //
@@ -10,10 +11,12 @@ var bcrypt = require('bcryptjs');
 var userSchema = new mongoose.Schema({
     name: {
         type: String,
-        trim: true
+        trim: true,
+        required:true
     },
     email:{
         type: String,
+        unique: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -46,8 +49,28 @@ var userSchema = new mongoose.Schema({
                 throw Error('The password should not contain the keyword "password"!');
             }
         }
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
 });
+
+//
+// ─── GENERATEAUTHTOKEN ──────────────────────────────────────────────────────────
+//
+
+userSchema.methods.generateAuthToken = async function () {  
+    var user = this;
+
+    var token = await jwt.sign({_id:user._id.toString()},'thisisasecret');
+    user.tokens = user.tokens.concat({token});
+    await user.save();
+    return token;
+
+}
 
 //
 // ─── DEFINE THE FUNCTION TO FIND USER ───────────────────────────────────────────
