@@ -55,7 +55,7 @@ router.post("/tasks",auth, async (req, res)=>{
 // ─── PATCH ROUTE ────────────────────────────────────────────────────────────────
 //
 
-router.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
     var updates = Object.keys(req.body);
     var allowedUpdates = ["description","completed"];
     var isValidOperation = updates.every((update) => {
@@ -70,10 +70,15 @@ router.patch('/tasks/:id', async (req, res) => {
 
     var id = req.params.id
     try {
-        var task = await Task.findById(id);
+        // The below bypasses the middleware. Therefore not good
+        // var task = await Task.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
+        var task = await Task.findOne({id,owner:req.user._id});
+
+        if (!task) {
+            return res.status(404).send();
+        }
 
         updates.forEach((update) => {
-            
             //since update is a variable therefore square bracket
             task[update] = req.body[update];
         })
@@ -81,11 +86,7 @@ router.patch('/tasks/:id', async (req, res) => {
         //Now we have the acces to middleware before the save
         await task.save();
 
-        // The below bypasses the middleware. Therefore not good
-        // var task = await Task.findByIdAndUpdate(id, req.body, {new:true, runValidators:true});
-        if (!task) {
-            return res.status(404).send();
-        }
+        
         res.send(task);
     } catch (e) {
         res.status(400).send(e);
