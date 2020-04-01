@@ -19,7 +19,8 @@ var taskSchema = mongoose.Schema({
     },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'User'
     }
 })
 
@@ -34,7 +35,7 @@ taskSchema.pre('save',async function (next) {
 })
 
 //
-// ─── MODEL THE USER SCHEM ───────────────────────────────────────────────────────
+// ─── MODEL THE USER SCHEMA ───────────────────────────────────────────────────────
 //
     
 var Task = mongoose.model('Task', taskSchema);

@@ -59,6 +59,16 @@ var userSchema = new mongoose.Schema({
 });
 
 //
+// ─── VIRTUAL PROPERTY ───────────────────────────────────────────────────────────
+//
+
+userSchema.virtual('tasks',{
+    ref:'Task',
+    localField:'_id', //the localField(of the User)=>_id is related to the 
+    foreignField:'owner' //foreignField 'owner' of the Tasks
+})
+
+//
 // ─── GENERATEAUTHTOKEN ──────────────────────────────────────────────────────────
 //
 
