@@ -1,5 +1,6 @@
 var express = require('express');
 var router = new express.Router();
+var multer = require('multer');
 var User = require("../models/users");
 var auth = require('../middleware/auth');
 
@@ -60,6 +61,28 @@ router.post('/users/login',async (req, res) => {
     } catch (e) {
         res.status(400).send(e);
     }
+})
+
+//
+// ─── UPLOAD A PICTURE ───────────────────────────────────────────────────────────
+//
+
+var upload = multer({ 
+    dest: 'avatar',
+    limits:{
+        fileSize: 2000000
+    },
+    fileFilter(req, file, cb){
+        if (!file.originalname.endsWith('.jpg')) {
+           return cb(new Error('File must be an image of .jpg format'));
+        }
+
+        cb(undefined,true);
+    }
+})
+
+router.post('/users/me/avatar',upload.single('avatar'),(req, res) => {
+    res.send();
 })
 
 //
