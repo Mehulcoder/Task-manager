@@ -73,8 +73,8 @@ var upload = multer({
         fileSize: 2000000
     },
     fileFilter(req, file, cb){
-        if (!file.originalname.endsWith('.jpg')) {
-           return cb(new Error('File must be an image of .jpg format'));
+        if (!file.originalname.match(/\.(jpg|jpeg)$/)) {
+           return cb(new Error('File must be an image of .jpg/.jpeg format'));
         }
 
         cb(undefined,true);
