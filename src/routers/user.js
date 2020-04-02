@@ -105,6 +105,25 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
 })
 
 //
+// ─── VIEW THE PICTURE ───────────────────────────────────────────────────────────
+//
+
+router.get('/users/:id/avatar', async (req,res) => {
+    try {
+        var user = await User.findById(req.params._id);
+        
+        if (!user || !user.avatar) {
+            throw new Error();
+        }
+
+        res.set('Content Type','image/jpg');
+        res.send(user.avatar);
+    } catch (e) {
+        res.status(404).send();
+    }   
+})
+
+//
 // ─── LOG OUT OF CURRENT SESSION ────────────────────────────────────────────────────────────────────
 //
 
