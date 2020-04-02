@@ -2,6 +2,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+var multer = require('multer');
 var userRouter = require('./routers/user');
 var taskRouter = require('./routers/task');
 var auth = require('./middleware/auth');
