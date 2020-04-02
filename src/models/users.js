@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-
+var Task = require('./tasks');
 
 //
 // ─── USER MODEL SCHEMA─────────────────────────────────────────────────────────────────
@@ -66,6 +66,16 @@ userSchema.virtual('tasks',{
     ref:'Task',
     localField:'_id', //the localField(of the User)=>_id is related to the 
     foreignField:'owner' //foreignField 'owner' of the Tasks
+})
+
+//
+// ─── DELETE ALL RELATED TASKS ───────────────────────────────────────────────────
+//
+
+userSchema.pre('remove', async function (next) {  
+    var user = this;
+    await Task.deleteMany({owner:user._id});
+    next();
 })
 
 //

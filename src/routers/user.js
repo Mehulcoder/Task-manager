@@ -88,7 +88,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
         var user = req.user;
         user.tokens = [];
         await user.save();
-        res.status(500).send("Logged out of all sessions!");
+        res.status(200).send("Logged out of all sessions!");
     } catch (e) {
         res.status(400).send(e);
     }
