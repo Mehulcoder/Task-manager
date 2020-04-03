@@ -9,7 +9,7 @@ var auth = require('./middleware/auth');
 require('../src/db/mongoose');
 
 const app = express();
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT;
 
 //
 // ─── MIDDLEWARE ─────────────────────────────────────────────────────────────────
