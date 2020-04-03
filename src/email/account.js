@@ -1,7 +1,9 @@
 var sgMail = require('@sendgrid/mail');
-
-
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+//
+// ─── SEND WELCOME EMAIL ─────────────────────────────────────────────────────────
+//
 
 var sendWelcomeEmail = function (email, name) {  
     sgMail.send({
@@ -12,6 +14,10 @@ var sendWelcomeEmail = function (email, name) {
     });    
 };
 
+//
+// ─── SEND CANCELLATION EMAIL ────────────────────────────────────────────────────
+//
+
 var sendCancellationEmail = function(email, name) {
     sgMail.send({
         to: email,
@@ -21,8 +27,15 @@ var sendCancellationEmail = function(email, name) {
     })
 }
 
+//
+// ─── EXPORT ─────────────────────────────────────────────────────────────────────
+//    
+
 module.exports = {
     sendWelcomeEmail,
     sendCancellationEmail
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
+
 
