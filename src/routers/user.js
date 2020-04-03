@@ -4,6 +4,7 @@ var multer = require('multer');
 var sharp = require('sharp');
 var User = require("../models/users");
 var auth = require('../middleware/auth');
+var {sendWelcomeEmail, sendCancellationEmail} = require('../email/account');
 
 //
 // ─── VIEW ROUTE ──────────────────────────────────────────────────────────────────
@@ -42,6 +43,7 @@ router.post("/users", async (req, res)=>{
     var user = new User(req.body);
     try {
         await user.save();
+        sendWelcomeEmail(user.email, user.name);
         var token = await user.generateAuthToken();
         res.status(201).send({user, token});
     } catch (error) {
@@ -114,7 +116,6 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
 router.get('/users/:id/avatar', async (req,res) => {
     try {
         var user = await User.findById(req.params.id);
-        console.log(user);
         
         if (!user || !user.avatar) {
             throw new Error();
@@ -209,6 +210,7 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove();
+        sendCancellationEmail(req.user.email, req.user.name);
         res.send(req.user);
     } catch (e) {
         res.status(400).send(e);
